@@ -42,6 +42,8 @@ pirate.message.embed.your_board=Your Board
 pirate.message.embed.players=Players
 pirate.message.embed.cash=Cash
 pirate.message.embed.bank=Bank
+pirate.message.embed.leaderboard=Leaderboard
+pirate.message.embed.leaderboard_item=- {id} : {score} points
 pirate.message.square_chosen=Square {square} has been chosen!
  # messages send after players have responded
 pirate.message.rob.sender=you just robbed {victim} for {amount}
@@ -54,6 +56,7 @@ pirate.message.nuke.sender=you just nuked {victim}
 pirate.message.nuke.victim={sender} just nuked you
 pirate.message.swap.sender=you swaped with {victim}
 pirate.message.swap.victim={sender} swapped with you
+pirate.message.winner=Game Over!\n<@{id}> won with {score} points
 
  # controls for how the grid is displayed
 pirate.grid.order="rob","kill","present","nuke","swap","choose","shield","mirror","bomb","double","bank","5K","3K","1K","200"
