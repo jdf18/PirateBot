@@ -2,7 +2,6 @@ from abc import abstractmethod
 import logging
 import discord
 from discord import Member, Embed, Message
-
 from utils import EnvironmentContainer, LangContatiner
 
 
