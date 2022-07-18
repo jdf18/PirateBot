@@ -6,6 +6,7 @@ from utils import LangContatiner, EnvironmentContainer
 from discord import Message, Embed, Member
 from random import choice
 import logging
+from time import sleep
 
 # setup logger
 global LOGGER
@@ -29,7 +30,7 @@ class Game:
             a = cls()
             a.randomise()
             return a
-        weights = [1,1,1,1,1,1,1,1,1,1,1,1,2,10,25] # amount of each number
+        weights = [1,1,1,0,1,2,1,1,1,1,1,1,2,10,25] # amount of each number
         def __init__(self, size: int=7):
             # stored as a 2 dimensional array of indexes 0-15
             self.items = [[None for i in range(size)] for j in range(size)]
@@ -228,6 +229,7 @@ class Game:
             if not player.is_ready1:
                 ready = False
         if ready:
+            sleep(5)
             await self.round()
 
     def random_square(self) -> str:
