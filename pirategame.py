@@ -353,7 +353,31 @@ class Game:
 
     async def end_game(self):
         LOGGER.info(LANG.logger.info.game.end)
-        # TODO send a message to everyone
+        # make a 2d array of player ids and their total scores
+        finalScores = []
+        for player in self.players.values():
+            finalScore = player.cash_value + player.bank_value
+            finalScores.append([player.id, finalScore])
+        # sort scores
+        temp = []
+        for i in range(len(finalScores) - 1):
+            if finalScores[i][1] < finalScores[i+1][1]:
+                temp = finalScores[i+1]
+                finalScores[i+1] = finalScores[i]
+                finalScores[i] = temp
+            else:
+                pass
+        #send a message to everyone
+        lines = []
+        for playerid, score in finalScores:
+            line = LANG.pirate.message.embed.leaderboard_item.format(id=playerid,score=score)
+            lines.append(line)
+
+        leaderboard = "\n".join(lines) 
+        #embed that shows winner and leaderboard 
+        embed = Embed( title=LANG.pirate.message.embed.title,       description=LANG.pirate.message.winner.format(id=finalScores[0][0],score=finalScores[0][1]))
+        embed.add_field(name=LANG.pirate.message.embed.leaderboard,  value=str(leaderboard), inline=True)
+        await self.text_channel.send(embed=embed)
         return
 
 
