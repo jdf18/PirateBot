@@ -43,7 +43,7 @@ pirate.message.embed.players=Players
 pirate.message.embed.cash=Cash
 pirate.message.embed.bank=Bank
 pirate.message.embed.leaderboard=Leaderboard
-pirate.message.embed.leaderboard_item=- {id} : {score} points
+pirate.message.embed.leaderboard_item=- <@{id}> : {score} points
 pirate.message.square_chosen=Square {square} has been chosen!
  # messages send after players have responded
 pirate.message.rob.sender=you just robbed {victim} for {amount}

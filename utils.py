@@ -72,7 +72,7 @@ class LangContatiner(metaclass=Singleton):
                 continue
 
             key = line[:line.index('=')]
-            value = line[line.index('=')+1:].rstrip()
+            value = line[line.index('=')+1:].rstrip().replace('\\n','\n')
             parts = key.split('.')
             
             current = self.data

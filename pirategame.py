@@ -1,10 +1,11 @@
 from exceptions import NotEnoughPlayers, NotInVC
 import framework
 from json import loads, dumps
-from random import shuffle
 from utils import LangContatiner, EnvironmentContainer
 from discord import Message, Embed, Member
-from random import choice
+from discord import ButtonStyle, Interaction # Discord 2.0 required
+from discord.ui import View, Button
+from random import choice, shuffle
 import logging
 from time import sleep
 
@@ -24,6 +25,51 @@ ENV = EnvironmentContainer(required=("TOKEN",))
 LOGGER.info(LANG.logger.info.env.init.format(name=__name__))
 
 class Game:
+    class Views:
+        class Action_on_victim(View):
+            def __init__(self, has_shield, has_mirror):
+                super().__init__()
+                self.value = None
+                self.has_shield = has_shield
+                self.has_mirror = has_mirror
+
+                self.buttons = []
+                self.buttons.append(
+                    Button(label="None", style=ButtonStyle.gray)
+                    )
+                if self.has_shield:
+                    self.buttons.append(
+                        Button(label="Shield", style=ButtonStyle.blurple)
+                    )
+                if self.has_mirror:
+                    self.buttons.append(
+                        Button(label="Mirror", style=ButtonStyle.green)
+                    )
+                for button in self.buttons:
+                    button.callback = self.button_callback
+                    self.add_item(button)
+
+            
+            async def button_callback(self, interaction: Interaction, button: Button):
+                if button.label == "None":
+                    await interaction.response.send_message('You chose not to use either a shield or mirror', ephemeral=True)
+                    self.value = False
+                    self.stop()
+                elif button.label == "Shield":
+                    if self.has_shield:
+                        await interaction.response.send_message('You chose use your shield', ephemeral=True)
+                        self.value = 'Shield'
+                        self.stop()
+                    else:
+                        await interaction.response.send_message('You do not have a shield')
+                elif button.label == "Mirror":
+                    if self.has_mirror:
+                        await interaction.response.send_message('You chose use your mirror', ephemeral=True)
+                        self.value = 'Mirror'
+                        self.stop()
+                    else:
+                        await interaction.response.send_message('You do not have a mirror')
+
     class Grid:
         @classmethod
         def random(cls):
@@ -163,11 +209,12 @@ class Game:
             description = LANG.pirate.grid.message.__getattr__(lookup[square_type])
             return description
 
-    def __init__(self, players: list, master: Member):
+    def __init__(self, players: list, master: Member, text_channel):
         # Setup variables
         self.active = True
         self.master = master
 
+        self.text_channel = text_channel
         self.squares = [chr(65+i)+str(j+1) for i in range(7) for j in range(7)]
 
         # control logic
@@ -378,7 +425,7 @@ class Game:
         leaderboard = "\n".join(lines) 
         #embed that shows winner and leaderboard 
         embed = Embed( title=LANG.pirate.message.embed.title,       description=LANG.pirate.message.winner.format(id=finalScores[0][0],score=finalScores[0][1]))
-        embed.add_field(name=LANG.pirate.message.embed.leaderboard,  value=str(leaderboard), inline=True)
+        embed.add_field(name=LANG.pirate.message.embed.leaderboard, value=str(leaderboard), inline=True)
         await self.text_channel.send(embed=embed)
         return
 
@@ -445,7 +492,7 @@ class App(framework.BaseClass):
 
     async def start_game(self, master: Member):
         # starts the game
-        self.current_game = Game(self.voice_channel.members, master)
+        self.current_game = Game(self.voice_channel.members, master, self.text_channel)
         await self.text_channel.send(LANG.pirate.message.game_start.format(user_id=self.current_game.master.id))
         await self.current_game.send_grids()
         await self.current_game.round()
