@@ -12,9 +12,9 @@ LOGGER.info(LANG.logger.info.logger.init.format(name=__name__))
 LOGGER.info(LANG.logger.info.lang.init.format(name=__name__))
 
 # setup environment variables
-global ENV
-ENV = EnvironmentContainer(required=("TOKEN",))
-LOGGER.info(LANG.logger.info.env.init.format(name=__name__))
+# global ENV
+# ENV = EnvironmentContainer(required=("TOKEN",))
+# LOGGER.info(LANG.logger.info.env.init.format(name=__name__))
 
 class NotEnoughPlayers(Exception):
 	def __init__(self, channel, num, *args):

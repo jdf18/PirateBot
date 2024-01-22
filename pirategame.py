@@ -20,9 +20,9 @@ LOGGER.info(LANG.logger.info.logger.init.format(name=__name__))
 LOGGER.info(LANG.logger.info.lang.init.format(name=__name__))
 
 # setup environment variables
-global ENV
-ENV = EnvironmentContainer(required=("TOKEN",))
-LOGGER.info(LANG.logger.info.env.init.format(name=__name__))
+# global ENV
+# ENV = EnvironmentContainer(required=("TOKEN",))
+# LOGGER.info(LANG.logger.info.env.init.format(name=__name__))
 
 class Game:
     class Views:
@@ -109,7 +109,7 @@ class Game:
                         rows[i] += LANG.pirate.grid.key.none
                     except TypeError:
                         rows[i] += LANG.pirate.grid.key.none
-            return eval('"'+LANG.pirate.grid.format.format(*rows)+'"')
+            return LANG.pirate.grid.format.format(*rows)
 
     class Player:
         # An object that stores data regarding the players in the game

@@ -16,8 +16,8 @@ LOGGER.info(LANG.logger.info.logger.init.format(name=__name__))
 LOGGER.info(LANG.logger.info.lang.init.format(name=__name__))
 
 # setup environment variables
-global ENV
-ENV = EnvironmentContainer(required=("TOKEN",))
+#global ENV
+# ENV = EnvironmentContainer(required=("TOKEN",))
 LOGGER.info(LANG.logger.info.env.init.format(name=__name__))
 
 class BaseClass:
@@ -27,7 +27,7 @@ class BaseClass:
         self.COMMAND_PREFIX = LANG.discord.command.prefix
 
         # start the discord client
-        self.client = discord.Client()
+        self.client = discord.Client(intents=discord.Intents.all())
         LOGGER.info(LANG.logger.info.discord.init)
 
     def setup(self):
@@ -84,7 +84,7 @@ class BaseClass:
     def start_client(self):
         # setup then start the client
         self.setup()
-        self.client.run(ENV.TOKEN)
+        self.client.run("OTM4ODc5Mzg1ODcwNjc2MDA4.GFjEmh.N79qoDuVH4Du7aCZmRW0qSyW_WRmhjxLyeXyjM")
 
     async def send_direct_message(self, member: Member, message: Message, response_wanted: bool = False):
         try:
